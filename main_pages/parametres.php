@@ -77,23 +77,12 @@ if (isset($_POST['deconnexion'])) {
                 <div class="sidebar-brand-text mx-3">PROJET <sup>GPS</sup></div>
             </a>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
-
             <!-- Nav Item - Accueil -->
             <li class="nav-item">
                 <a class="nav-link" href="accueil.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Accueil</span></a>
             </li>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                MCG
-            </div>
 
             <!-- Condition pour afficher la partie "Nav Item - Admin" uniquement si isAdmin est égal à 1 -->
             <?php if ($isAdmin == 1) : ?>
