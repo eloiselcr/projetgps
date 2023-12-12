@@ -11,7 +11,7 @@ var reponseJSON = null;
 
 // Connexion Fermée
 socket.addEventListener('close', () => {
-    statusSocket.innerHTML = "Status : Fermé (Le serveur à été fermé) !";
+    statusSocket.innerHTML = "Status : Fermé (Le serveur a été fermé) !";
 });
   
 // Tentative Connexion
