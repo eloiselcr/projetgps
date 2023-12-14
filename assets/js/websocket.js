@@ -8,34 +8,21 @@ const socket = new WebSocket('ws://192.168.64.91:12345');
 const statusSocket = document.getElementById('status');
 // Réponse JSON
 var reponseJSON = null;
+// Déclaration d'une variable pour stocker l'ID de l'intervalle
+let intervalID;
 
-// Connexion Fermée
-socket.addEventListener('close', () => {
-    statusSocket.innerHTML = "Status : Fermé (Le serveur a été fermé) !";
-});
-  
-// Tentative Connexion
-if (socket.readyState == 0)
-{
-    statusSocket.innerHTML = "Status : Le socket a été créé ! En attente de connexion ...";
-}
-
-// Connexion Ouverte
-socket.addEventListener('open', () => {
-    statusSocket.innerHTML = "Status : Connecté !";
-});
-
-var body = document.body, 
-    r = document.querySelector('#r'),
-    g = document.querySelector('#g'),
-    b = document.querySelector('#b'),
-    w = document.querySelector('#w'),
-    adress = document.querySelector('#adress'),
-    r_out = document.querySelector('#r_out'),
-    g_out = document.querySelector('#g_out'),
-    b_out = document.querySelector('#b_out'),
-    w_out = document.querySelector('#w_out');
-    adress_out = document.querySelector('#adress_out');
+// Interface
+var r = document.querySelector('#r');
+var g = document.querySelector('#g');
+var b = document.querySelector('#b');
+var w = document.querySelector('#w');
+var adress = document.querySelector('#adress');
+var r_out = document.querySelector('#r_out');
+var g_out = document.querySelector('#g_out');
+var b_out = document.querySelector('#b_out');
+var w_out = document.querySelector('#w_out');
+var adress_out = document.querySelector('#adress_out');
+var monCheckbox = document.getElementById('changementAuto');
 
 r.addEventListener('change', function() {
   r_out.value = r.value;
@@ -76,3 +63,57 @@ adress.addEventListener('change', function() {
 adress.addEventListener('input', function() {
     adress_out.value = adress.value;
 }, false);
+
+// Écouter l'événement de clic sur le checkbox
+monCheckbox.addEventListener('click', () => {
+    // Inverser la valeur du checkbox à chaque clic
+    console.log(monCheckbox.checked);
+});
+
+// Tentative Connexion
+if (socket.readyState == 0)
+{
+    statusSocket.innerHTML = "Status : Le socket a été créé ! En attente de connexion ...";
+}
+
+// Fonction pour envoyer au serveur
+function requestUser() 
+{
+  let msg = {
+    type: "trameDMX512",
+    adressLum: adress.value,
+    redValue: r.value,
+    greenValue : g.value,
+    blueValue: b.value,
+    whiteValue: w.value, 
+    changeAutoLum: monCheckbox.checked,
+  };
+
+  socket.send(JSON.stringify(msg));
+}
+
+// Selon ou on se situe
+if (page == "accueil.php")
+{
+  // Connexion Ouverte
+  socket.addEventListener('open', () => {
+    statusSocket.innerHTML = "Status : Connecter !";
+
+    // Appeler requestUser toutes les 50 ms
+    intervalID = setInterval(requestUser, 50);
+  });
+
+  socket.onmessage = function (evt) // Lorsque le serveur répond
+  {
+    //reponseJSON = JSON.parse(evt.data); // On recupere en format json
+    console.log(evt.data);
+  }
+
+  // Gérer la déconnexion du WebSocket
+  socket.addEventListener('close', () => {
+    statusSocket.innerHTML = "Status : Déconnecté !";
+        
+    // Arrêter l'envoi de trames en effaçant l'intervalle
+    clearInterval(intervalID);
+  });
+}

@@ -162,14 +162,14 @@ if (isset($_POST['deconnexion'])) {
                 </fieldset>
 
                 <fieldset>
-                <input type="checkbox" id="changementAuto" name="changementAuto">
-                <label for="changementAuto">Changement automatique</label>
+                    <input type="checkbox" id="changementAuto" name="changementAuto">
+                    <label for="changementAuto">Changement automatique</label>
                 </fieldset>
 
                 <fieldset id="adressLum">
-                <label for="adress">Adresse Lumière</label>
-                <input type="range" min="0" max="510" id="adress" step="1" value="0">
-                <output for="adress" id="adress_out">0</output>
+                    <label for="adress">Adresse Lumière</label>
+                    <input type="range" min="0" max="510" id="adress" step="1" value="0">
+                    <output for="adress" id="adress_out">0</output>
                 </fieldset>
             </div>
             <!-- End of Main Content -->
